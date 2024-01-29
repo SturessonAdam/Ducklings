@@ -114,24 +114,27 @@ public class DucklingsRepository {
     }
 
     public void createUsers() {
-        Statement stmt = null;
+
+        String sql = "CREATE TABLE IF NOT EXISTS users (id INT(2) AUTO_INCREMENT PRIMARY KEY, name varchar(255), password varchar(255))";
         try {
-            stmt = conn.createStatement();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        sql = "TRUNCATE TABLE users";
         try {
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (id INT(2) AUTO_INCREMENT PRIMARY KEY, name varchar(255), password varchar(255))");
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        sql = "INSERT INTO users (name, password) VALUES ('Adam', 'pass123'), ('Jakob', 'pass123'), ('Yves', 'pass123'), ('Elin', 'pass123')";
         try {
-            stmt.execute("TRUNCATE TABLE users");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            stmt.execute("INSERT INTO users (name, password) VALUES ('Adam', 'pass123'), ('Jakob', 'pass123'), ('Yves', 'pass123'), ('Elin', 'pass123')");
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

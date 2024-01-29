@@ -16,20 +16,12 @@ import java.util.List;
     @WebServlet("/home")
     public class HomeServlet extends HttpServlet {
         private DucklingsRepository ducklingsRepository = new DucklingsRepository();
-        List<UserModel> users = ducklingsRepository.getAllUsers();
-
-        @Override
-        public void init() {
-            ducklingsRepository = new DucklingsRepository();
-            ducklingsRepository.createUsers();
-            ducklingsRepository.createPaymentsTable();
-        }
 
         @Override
         protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+            
             PrintWriter out = resp.getWriter();
-            users = ducklingsRepository.getAllUsers();
+            List<UserModel> users = ducklingsRepository.getAllUsers();
 
             for(UserModel user: users){
                 out.println("user: " + user.getName() + "password: " + user.getPassword());
@@ -40,6 +32,10 @@ import java.util.List;
         protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             String username = req.getParameter("username");
             String password = req.getParameter("password");
+
+            ducklingsRepository = new DucklingsRepository();
+            ducklingsRepository.createUsers();
+            ducklingsRepository.createPaymentsTable();
 
             UserModel user = ducklingsRepository.getUserByUsername(username);
 
